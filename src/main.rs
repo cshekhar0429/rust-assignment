@@ -1,5 +1,11 @@
+use std::path::Path;
 mod date_time;
 use date_time::DateTime;
+
+mod log_level;
+use log_level::LogLevel;
+
+mod log_entry;
 
 fn main() {
     let dt_str = "2024-12-10 10:23:45";
@@ -17,6 +23,14 @@ fn main() {
     for t in &v {
         println!("{}", t);
     }
-    
+
+    let line = "2024-01-02 fkas";
+    let source_file = Path::new("src/log_file.txt");
+
+    match log_entry::parse_log_line(line, source_file) {
+        Ok(entry) => println!("Parsed: {:?}", entry),
+        Err(e) => println!("Parse failed: {:?}", e),
+    }
+
 
 }
