@@ -2,7 +2,7 @@ use std::str::FromStr;
 use std::fmt;
 use std::cmp::Ordering;
 
-#[derive(Debug,PartialEq,Eq)]
+#[derive(Debug,PartialEq,Eq,Clone)]
 pub struct DateTime {
     pub year: u16,
     pub month: u8,

@@ -72,3 +72,14 @@ A `LogEntry` contains:
 Example log line:
 2024-01-15 10:23:45 [ERROR] storage: Failed to mount filesystem /dev/sda1
 
+## 4. Statistics Aggregator
+
+Created a `Statistics` module to calculate summary information from log entries.
+
+It provides:
+- total number of log entries
+- entries count by level, component, and hour
+- total errors (`ERROR` + `FATAL`) and error rate
+- most active component and peak hour
+- first and last log timestamp
+- handles empty input safely

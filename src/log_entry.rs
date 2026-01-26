@@ -104,11 +104,11 @@ pub fn parse_log_line(line: &str, source_file: &Path) -> Result<LogEntry, ParseE
         });
     }
 
-    println!("{}",timestamp);
-    println!("{}",level);
-    println!("{}",component);
-    println!("{}",message);
-    println!("{:?}",source_file);
+    // println!("{}",timestamp);
+    // println!("{}",level);
+    // println!("{}",component);
+    // println!("{}",message);
+    // println!("{:?}",source_file);
     
     let log_entry:LogEntry = LogEntry{
         timestamp,
@@ -118,7 +118,7 @@ pub fn parse_log_line(line: &str, source_file: &Path) -> Result<LogEntry, ParseE
         source_file:source_file.to_path_buf()
     };
     
-    println!("created....");
+    // println!("created....");
 
      Ok(log_entry)
 

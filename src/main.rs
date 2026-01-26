@@ -6,6 +6,12 @@ mod log_level;
 use log_level::LogLevel;
 
 mod log_entry;
+use log_entry::LogEntry;
+use log_entry::parse_log_line;
+use log_entry::ParseError;
+
+mod statistics_aggregator;
+use statistics_aggregator::Statistics;
 
 fn main() {
     let dt_str = "2024-12-10 10:23:45";
@@ -31,6 +37,36 @@ fn main() {
         Ok(entry) => println!("Parsed: {:?}", entry),
         Err(e) => println!("Parse failed: {:?}", e),
     }
+
+    // *************** Statistics ********
+
+    let source_file = Path::new("src/log_file.txt");
+
+    let lines = vec![
+        "2024-01-15 7:23:45 [ERROR] storage: Failed to mount filesystem /dev/sda1",
+        "2024-06-15 8:23:46 [INFO] network: Connection established to 192.168.1.100",
+        "2024-01-15 9:2347 [WARN] storage: Multiple failed login attempts from user admin",
+        "2024-11-15 8:24:01 [INFO] scheduler: Task queue processing started",
+        "2024-10-15 10:24:02 [FATAL] memory: Garbage collection cycle completed",
+        "2024-09-15 12:24:05 [FATAL] kernel: Out of memory - system unstable",
+    ];
+
+    let mut entries: Vec<LogEntry> = Vec::new();
+    let mut errors: Vec<ParseError> = Vec::new();
+
+    for line in lines {
+        match parse_log_line(line, source_file) {
+            Ok(entry) => entries.push(entry),
+            Err(err) => errors.push(err)
+        }
+    }
+
+    let stats = Statistics::from_entries(&entries);
+    println!("stats:- {:?}",stats);
+    println!("Total entries = {}", stats.total_entries);
+    println!("{}", stats.error_rate);
+    println!("{}",stats.error_count);
+    println!("Error: {:?}",errors);
 
 
 }
