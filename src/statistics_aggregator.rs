@@ -1,5 +1,5 @@
-use crate::DateTime;
-use crate::LogLevel;
+use crate::date_time::DateTime;
+use crate::log_level::LogLevel;
 use crate::log_entry::LogEntry;
 use std::collections::HashMap;
 

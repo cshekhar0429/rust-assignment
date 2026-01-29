@@ -19,8 +19,6 @@ impl FromStr for DateTime {
         let (date, time) = s.split_once(' ')
                                         .ok_or_else(|| "Invalid format in date and time".to_string())?;
 
-        println!("date={} ,time= {}",date, time);
-
         let (year, month, day) = {
             let mut it = date.split('-');
             match (it.next(), it.next(), it.next(), it.next()) {

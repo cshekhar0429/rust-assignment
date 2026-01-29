@@ -101,3 +101,42 @@ This module provides functionality to read, parse, and analyze log files from ei
 A `LogAnalyzer` maintains:
 - `entries: Vec<LogEntry>` — successfully parsed log entries
 - `errors: Vec<ParseError>` — parsing errors encountered during analysis
+
+
+## 6. Tests
+
+All required test cases have been added
+
+# DateTime Tests
+- Parse valid datetime
+- Reject invalid month (0, 13)
+- Reject invalid hour (24, 25)
+- Compare two datetimes
+
+# LogLevel Tests
+- Parse all valid levels
+- Case insensitivity
+- Ordering comparison
+
+# Parser Tests
+- Parse valid log line
+- Handle extra whitespace
+- Reject malformed lines with correct error
+
+# Statistics Tests
+- Calculate from sample entries
+- Handle empty input
+- Correct percentages
+
+# File Processing Tests
+- Process valid file
+- Handle missing file
+- Skip malformed lines
+
+## 7. Reports
+
+A separate `report.rs` file has been added to format and print
+statistics in the required output styles.
+
+- **Text Table Format** – prints summary, log level distribution,
+  component distribution, peak hour, and error rate.

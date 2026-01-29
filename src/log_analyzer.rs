@@ -2,7 +2,9 @@ use std::fs::{self, File};
 use std::io::{self, Read};
 use std::path::{Path, PathBuf};
 
-use crate::{LogEntry, ParseError, Statistics, parse_log_line};
+use crate::log_entry::{LogEntry, ParseError};
+use crate::statistics_aggregator::Statistics;
+use crate::log_entry::parse_log_line;
 
 #[derive(Debug)]
 pub enum AnalyzerError {
@@ -53,8 +55,8 @@ impl LogAnalyzer {
 
         let mut success_count = 0usize;
 
-        for line in contents.lines() {
-            match parse_log_line(line, path) {
+        for (i, line) in contents.lines().enumerate() {
+            match parse_log_line(line, path, i+1) {
                 Ok(entry) => {
                     self.entries.push(entry);
                     success_count += 1;
