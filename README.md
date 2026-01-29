@@ -83,3 +83,21 @@ It provides:
 - most active component and peak hour
 - first and last log timestamp
 - handles empty input safely
+
+## 5. Log Analyzer Module
+
+This module provides functionality to read, parse, and analyze log files from either a single file or an entire directory. It collects successfully parsed log entries, tracks parsing errors, and generates aggregated statistics.
+
+- Read and parse a **single file**
+- Read and parse **all `.log` files in a directory**
+- Collect valid `LogEntry` records
+- Collect Error `ParseError` information
+- Generate aggregated `Statistics` from parsed entries
+- Strong error handling using a custom `AnalyzerError` enum
+
+---
+## Data Managed by the Analyzer
+
+A `LogAnalyzer` maintains:
+- `entries: Vec<LogEntry>` — successfully parsed log entries
+- `errors: Vec<ParseError>` — parsing errors encountered during analysis

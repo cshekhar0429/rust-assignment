@@ -13,6 +13,9 @@ use log_entry::ParseError;
 mod statistics_aggregator;
 use statistics_aggregator::Statistics;
 
+mod log_analyzer;
+use log_analyzer::LogAnalyzer;
+use log_analyzer::AnalyzerError;
 fn main() {
     let dt_str = "2024-12-10 10:23:45";
     let time_stamp: DateTime = dt_str.parse().unwrap();
@@ -69,4 +72,35 @@ fn main() {
     println!("Error: {:?}",errors);
 
 
+    // ********* Log Analyzer File ************
+    println!("****** Log Analyzer - single file *********");
+    let mut analyzer:LogAnalyzer = LogAnalyzer::new();
+    let path:&Path = Path::new("src/logs/all.log");
+
+    let count = analyzer.process_file(path).unwrap();
+    println!("count: {}",count);
+    let stats = analyzer.statistics();
+    println!("Stats: {:?}",stats);
+    let errors = analyzer.parse_errors();
+    println!("errors: {:?}",errors);
+
+    let entries = analyzer.entries();
+
+    println!("Entries: {:?}",entries);
+
+    // ****** Directory *********
+    println!("******** Directory ******");
+    let mut analyzer = LogAnalyzer::new();
+    let path: &Path = Path::new("src/logs");
+
+    match analyzer.process_directory(path) {
+        Ok(count) => {
+            println!("Processed {} entries", count);
+            println!("Entries: {}", analyzer.entries().len());
+            println!("Errors: {}", analyzer.parse_errors().len());
+        }
+        Err(e) => eprintln!("Error: {:?}", e),
+    }
+    let en = analyzer.entries();
+    println!("{:?}", en);
 }
