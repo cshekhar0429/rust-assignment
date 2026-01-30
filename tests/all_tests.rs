@@ -144,7 +144,7 @@ fn statistics_percentages() {
 #[test]
 fn file_process_valid_file() {
     let mut analyzer = LogAnalyzer::new();
-    let path = Path::new("src/logs/all.log");
+    let path = Path::new("tests/fixtures/simple.log");
 
     let result = analyzer.process_file(path);
     assert!(result.is_ok());
@@ -162,7 +162,7 @@ fn file_missing_file() {
 #[test]
 fn file_skip_malformed_lines() {
     let mut analyzer = LogAnalyzer::new();
-    let path = Path::new("src/logs");
+    let path = Path::new("tests/fixtures");
 
     let result = analyzer.process_directory(path);
     assert!(result.is_ok());

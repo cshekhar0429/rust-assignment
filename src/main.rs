@@ -1,34 +1,56 @@
-use std::path::Path;
+use std::path::PathBuf;
 mod date_time;
-use date_time::DateTime;
-
 mod log_level;
-use log_level::LogLevel;
-
 mod log_entry;
-use log_entry::LogEntry;
-use log_entry::parse_log_line;
-use log_entry::ParseError;
-
 mod statistics_aggregator;
-use statistics_aggregator::Statistics;
-
 mod log_analyzer;
 use log_analyzer::LogAnalyzer;
-use log_analyzer::AnalyzerError;
 
 mod report;
-use report::print_report;
+use report::{print_report, print_report_json};
+
+use clap::Parser;
+
+#[derive(Parser)]
+struct Cli {
+    paths: Vec<PathBuf>,
+    #[arg(long, default_value = "text")]
+    format: String,
+}
 
 fn main() {
+ let cli = Cli::parse();
 
-    println!("******** Directory ******");
+    if cli.paths.is_empty() {
+        println!("No File or Directory provided");
+        return;
+    }
+
     let mut analyzer = LogAnalyzer::new();
-    let path: &Path = Path::new("src/logs");
 
-    let count = analyzer.process_directory(path).unwrap();
-    let error_count = analyzer.parse_errors().len();
+    for path in &cli.paths {
+        let result = if path.is_file() {
+            analyzer.process_file(path)
+        } else if path.is_dir() {
+            analyzer.process_directory(path)
+        } else {
+            println!("Invalid path: {:?}", path);
+            continue;
+        };
+
+        if let Err(e) = result {
+            println!("Error processing {:?}: {:?}", path, e);
+        }
+    }
+
     let stats = analyzer.statistics();
-    print_report(&stats, error_count);
+    let error_count = analyzer.parse_errors().len();
 
+    println!("Errors in files: {:?}", analyzer.parse_errors());
+
+    if cli.format == "json" {
+        print_report_json(&stats, error_count);
+    } else {
+        print_report(&stats, error_count);
+    }
 }

@@ -140,3 +140,16 @@ statistics in the required output styles.
 
 - **Text Table Format** – prints summary, log level distribution,
   component distribution, peak hour, and error rate.
+
+- **JSON Format**
+  - Produces structured JSON output.
+
+## 8. Command Line Interface (CLI)
+
+The application supports command-line arguments for flexible usage.
+
+### Usage
+```bash
+cargo run <paths> [--format text|json]
+
+-Example: cargo run tests/fixtures/simple.log --format json
